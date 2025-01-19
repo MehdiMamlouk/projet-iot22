@@ -1,0 +1,63 @@
+/* Style général de la page utilisateur */
+.user-page {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f7f7f7;
+    padding: 20px;
+    background-image: url('../images/fond2.jpeg'); /* Fond d'écran spécifique à la page utilisateur */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Titre "Welcome" encadré et stylisé */
+.welcome-title {
+    background-color: #266d38;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    width: auto;
+    max-width: 400px;
+    margin: 0 auto 30px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Styles des sections (cercles) */
+.user-page .circle-button {
+    width: 150px;
+    height: 150px;
+    background-color: #4caf50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Survol des cercles */
+.user-page .circle-button:hover {
+    transform: scale(1.1);
+    background-color: #45a049;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Conteneur des sections */
+.user-page .container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+}

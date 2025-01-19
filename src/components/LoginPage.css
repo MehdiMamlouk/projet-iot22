@@ -1,0 +1,130 @@
+/* Style global */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  background-image: url('../images/login.jpg'); /* Arrière-plan personnalisé */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+/* Container du formulaire pour le centrer sans affecter le reste */
+.login-page {
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  min-height: 100vh; /* Prend toute la hauteur de la fenêtre */
+}
+ 
+.form-container {
+  width: 100%;
+  max-width: 400px; /* Réduit la largeur du formulaire */
+  padding: 20px; /* Réduit le padding pour un formulaire plus compact */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 15px; /* Moins d'espacement pour un titre plus proche du formulaire */
+  font-size: 24px; /* Taille de police plus petite pour le titre */
+  color: #333;
+}
+
+/* Style des champs de saisie */
+.input-group {
+  margin-bottom: 15px; /* Réduit l'espacement entre les champs */
+}
+
+.input-group label {
+  display: block;
+  font-size: 14px; /* Taille de police plus petite pour les labels */
+  font-weight: bold;
+  margin-bottom: 6px; /* Espacement plus petit entre le label et le champ */
+  color: #333;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px; /* Réduit le padding pour un champ plus petit */
+  font-size: 12px; /* Réduit la taille de la police des champs de saisie */
+  border: 1px solid #ccc;
+  border-radius: 4px; /* Bordure plus fine et plus arrondie */
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Style des boutons */
+button {
+  padding: 10px 20px; /* Réduit la taille du bouton */
+  font-size: 14px; /* Taille de texte plus petite pour le bouton */
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px; /* Bordure plus arrondie pour le bouton */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Bouton pleine largeur */
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Style du lien pour basculer entre login et signup */
+.toggle-link {
+  text-align: center;
+  color: #4CAF50;
+  cursor: pointer;
+  margin-top: 15px; /* Moins d'espacement pour le lien */
+  font-size: 14px; /* Taille de police plus petite pour le lien */
+  transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+.toggle-link:hover {
+  color: #45a049;
+  font-weight: bold;
+}
+
+.toggle-link.hovered {
+  color: blue;
+  font-weight: bold;
+}
+
+.message {
+  text-align: center;
+  color: #d9534f;
+  font-size: 12px; /* Taille de texte plus petite pour les messages */
+  margin-top: 10px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .input-group input,
+  button {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+}

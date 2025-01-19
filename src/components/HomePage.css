@@ -1,0 +1,51 @@
+/* Appliquer l'image de fond à toute la section hero */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh; /* Prend toute la hauteur de la fenêtre */
+  background-size: cover; /* L'image couvre toute la section */
+  background-position: center; /* Centre l'image */
+  background-repeat: no-repeat; /* Ne pas répéter l'image */
+}
+
+/* Contenu au centre de l'image */
+.content {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.895); /* Fond plus sombre pour le cadre */
+  padding: 40px;
+  border-radius: 0; /* Enlever les coins arrondis pour un effet carré */
+  max-width: 600px;
+  text-align: center;
+  width: 100%; /* S'assurer que la largeur prend toute la place disponible */
+}
+
+/* Titre principal */
+.content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+/* Description sous le titre */
+.content p {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Style du bouton */
+.btn {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #28a745; /* Couleur verte */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}

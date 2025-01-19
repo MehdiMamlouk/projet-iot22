@@ -1,0 +1,26 @@
+.navbar {
+    background-color: rgba(10, 164, 59, 0.625); /* Gris clair avec 50% de transparence */
+    padding: 10px;
+    backdrop-filter: blur(5px); /* Optionnel : ajoute un flou à l'arrière-plan derrière la navbar */
+}
+
+  
+  .navbar-list {
+    list-style: none; /* Supprime les puces */
+    display: flex; /* Affiche les éléments en ligne */
+    justify-content: space-around; /* Espacement équitable entre les liens */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-link {
+    text-decoration: none; /* Supprime le soulignement des liens */
+    color: white; /* Couleur du texte */
+    font-size: 18px; /* Taille du texte */
+    transition: color 0.3s; /* Animation pour changer la couleur au survol */
+  }
+  
+  .navbar-link:hover {
+    color: #00bcd4; /* Couleur au survol */
+  }
+  

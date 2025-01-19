@@ -1,0 +1,98 @@
+/* Styles généraux pour les pages */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh; /* Prend toute la hauteur de la fenêtre */
+  background-color: #f4f4f4; /* Fond clair pour les pages */
+  color: #333; /* Couleur principale du texte */
+  padding: 20px;
+}
+
+.page-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #28a745; /* Couleur verte pour le titre */
+  padding: 0 10px; /* Padding latéral pour éviter que le texte touche les bords */
+}
+
+.page-container p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  max-width: 700px;
+  color: #555; /* Couleur légèrement grise pour le texte */
+  padding: 0 10px; /* Padding latéral */
+}
+
+/* Style du bouton Next */
+.btn {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #28a745; /* Couleur verte */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: scale(1.05); /* Effet léger d'agrandissement au survol */
+}
+
+/* Style pour la page entière */
+.notification-page {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+/* Conteneur de contenu */
+.content-container {
+  background-color: rgba(0, 0, 0, 0.6); /* Légère opacité pour améliorer le contraste */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Titre */
+.notification-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+/* Texte */
+.notification-text {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Bouton */
+.btn {
+  padding: 0.8rem 2rem;
+  background-color: #28a745; /* Couleur verte */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #218838;
+}
+
