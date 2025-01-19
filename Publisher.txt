@@ -1,0 +1,111 @@
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+// Ultrasonic sensor pins
+const int trigPin = 5;
+const int echoPin = 18; // Updated to avoid pin conflict with servo
+
+// Soil sensor pin
+const int soilSensorPin = 34; // Analog pin for soil sensor
+
+// Define sound speed in cm/uS
+#define SOUND_SPEED 0.034
+#define CM_TO_INCH 0.393701
+
+// WiFi details
+const char* WIFI_NAME = "Student-LBS";
+const char* WIFI_PASSWORD = "student2023";
+
+// MQTT details
+const char* mqttServer = "broker.hivemq.com";
+const int mqttPort = 1883;
+const char* mqttClientID = "ESP32Publisher";
+const char* distanceTopic = "sensor/distance";
+const char* soilMoistureTopic = "sensor/soilMoisture";
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
+
+// Variables for distance measurement
+long duration;
+float distanceCm;
+float distanceInch;
+
+// Soil sensor variable
+int soilMoistureRaw;
+float soilMoisturePercentage;
+
+void connectToWiFi() {
+  WiFi.begin(WIFI_NAME, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+  Serial.println("Connected to WiFi");
+  Serial.println("Local IP: " + String(WiFi.localIP()));
+}
+
+void connectToMQTT() {
+  while (!mqttClient.connected()) {
+    Serial.println("Connecting to MQTT broker...");
+    if (mqttClient.connect(mqttClientID)) {
+      Serial.println("Connected to MQTT broker");
+    } else {
+      Serial.print("Failed to connect to MQTT broker, state: ");
+      Serial.println(mqttClient.state());
+      delay(5000);
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200); // Start serial communication
+
+  pinMode(trigPin, OUTPUT); // Set trigPin as an Output
+  pinMode(echoPin, INPUT);  // Set echoPin as an Input
+
+  connectToWiFi();
+
+  mqttClient.setServer(mqttServer, mqttPort); // Configure MQTT server
+  connectToMQTT();
+}
+
+void loop() {
+  if (!mqttClient.connected()) {
+    connectToMQTT();
+  }
+  mqttClient.loop();
+
+  // Measure distance using ultrasonic sensor
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+  distanceCm = duration * SOUND_SPEED / 2;
+  distanceInch = distanceCm * CM_TO_INCH;
+
+  // Read soil moisture sensor value
+  soilMoistureRaw = analogRead(soilSensorPin);
+  soilMoisturePercentage = map(soilMoistureRaw, 0, 4095, 0, 100);
+
+  // Publish data to MQTT
+  String distancePayload = String(distanceCm);
+  String soilMoisturePayload = String(soilMoisturePercentage);
+
+  if (mqttClient.publish(distanceTopic, distancePayload.c_str())) {
+    Serial.println("Distance published to MQTT: " + distancePayload);
+  } else {
+    Serial.println("Failed to publish distance to MQTT");
+  }
+
+  if (mqttClient.publish(soilMoistureTopic, soilMoisturePayload.c_str())) {
+    Serial.println("Soil moisture published to MQTT: " + soilMoisturePayload);
+  } else {
+    Serial.println("Failed to publish soil moisture to MQTT");
+  }
+
+  delay(10000); // Wait 10 seconds before the next loop
+}

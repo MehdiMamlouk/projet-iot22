@@ -1,0 +1,127 @@
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+
+// Wi-Fi credentials
+const char* ssid = "Student-LBS";
+const char* password = "student2023";
+
+// Firebase Firestore configuration
+#define FIREBASE_HOST "https://firestore.googleapis.com/v1/projects/my-application-dabd2/databases/(default)/documents"
+#define FIREBASE_AUTH "AIzaSyCSLpQjTZaKgEBnzrX3S0mxhv7dVIWB2Bg"  // Your Firebase Auth Token
+
+// MQTT configuration
+const char* mqttServer = "broker.hivemq.com";
+const int mqttPort = 1883;
+const char* mqttClientID = "ESP32Subscriber";
+const char* distanceTopic = "sensor/distance";
+const char* soilMoistureTopic = "sensor/soilMoisture";
+
+// MQTT client
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
+
+// Connect to Wi-Fi
+void connectToWiFi() {
+  Serial.print("Connecting to WiFi");
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi connected. IP address: " + WiFi.localIP().toString());
+}
+
+// Send data to Firestore via HTTP
+void saveDataToFirestore(String collection, String document, String message) {
+  HTTPClient http;
+  
+  // Convert FIREBASE_HOST to String and concatenate other parts
+  String url = String(FIREBASE_HOST) + "/" + collection + "/" + document + ":commit?key=" + String(FIREBASE_AUTH);
+
+  http.begin(url); // Begin HTTP request
+  http.addHeader("Content-Type", "application/json");
+
+  // Prepare Firestore request body
+  DynamicJsonDocument doc(1024);
+  JsonObject fields = doc.createNestedObject("fields");
+  fields["value"]["stringValue"] = message;
+  
+  String jsonString;
+  serializeJson(doc, jsonString);
+
+  int httpCode = http.POST(jsonString); // Use POST method for Firestore
+
+  if (httpCode == HTTP_CODE_OK) {
+    Serial.println("Data saved to Firestore successfully.");
+  } else {
+    Serial.print("Failed to save data: ");
+    Serial.println(httpCode);
+  }
+
+  http.end(); // Close HTTP connection
+}
+
+// MQTT callback function to handle received messages
+void mqttCallback(char* topic, byte* payload, unsigned int length) {
+  String message = "";
+  for (int i = 0; i < length; i++) {
+    message += (char)payload[i];
+  }
+
+  Serial.print("Message received from topic [");
+  Serial.print(topic);
+  Serial.print("]: ");
+  Serial.println(message);
+
+  // Check the topic and send the corresponding data to Firestore
+  if (String(topic) == distanceTopic) {
+    String collection = "sensor_data"; // Collection in Firestore
+    String document = "distance";      // Document name for distance data
+    saveDataToFirestore(collection, document, message);
+  } else if (String(topic) == soilMoistureTopic) {
+    String collection = "sensor_data"; // Collection in Firestore
+    String document = "soilMoisture";  // Document name for soil moisture data
+    saveDataToFirestore(collection, document, message);
+  }
+}
+
+// Connect to MQTT
+void connectToMQTT() {
+  while (!mqttClient.connected()) {
+    Serial.println("Connecting to MQTT...");
+    if (mqttClient.connect(mqttClientID)) {
+      Serial.println("Connected to MQTT broker!");
+      mqttClient.subscribe(distanceTopic);
+      mqttClient.subscribe(soilMoistureTopic);
+      Serial.println("Subscribed to topics.");
+    } else {
+      Serial.print("Failed to connect to MQTT. Retrying in 5 seconds...");
+      delay(5000);
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  // Connect to Wi-Fi
+  connectToWiFi();
+
+  // Set up MQTT
+  mqttClient.setServer(mqttServer, mqttPort);
+  mqttClient.setCallback(mqttCallback);
+
+  // Connect to MQTT
+  connectToMQTT();
+}
+
+void loop() {
+  // Reconnect to MQTT if disconnected
+  if (!mqttClient.connected()) {
+    connectToMQTT();
+  }
+
+  mqttClient.loop(); // Handle MQTT messages
+}
